@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./MISC/icon.png" type="image/png">
+    <title>Cards of Idirion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+<nav>
+    <ul>
+        <li><a href="index.html">Informações</a></li>
+        <li><a href="cards.html">Cards</a></li>
+        <li><a href="gerador.html">Gerador de Cards</a></li>
+    </ul>
+</nav>
+
+<header>
+    <!-- Adicionar título ou logotipo do jogo aqui -->
+</header>
+
+<main>
+    <section>
+        <h1>Cards of Idirion</h1>
+        <p>Bem-vindo ao Cards of Idirion, um jogo estratégico onde você coleciona e batalha com cartas poderosas! Explore a lista de cartas e descubra novas estratégias</p>
+    </section>
+
+     <!-- Exemplo de galeria de cartas -->
+     <section class="card-examples">
+        <div class="card-grid">
+            <img src="./MISC/card1.png" alt="Card 1" class="card" onclick="window.open('./MISC/card1.png', '_blank');">
+            <img src="./MISC/card2.png" alt="Card 2" class="card" onclick="window.open('./MISC/card2.png', '_blank');">
+            <img src="./MISC/card3.png" alt="Card 3" class="card" onclick="window.open('./MISC/card3.png', '_blank');">
+        </div>
+    </section>
+
+    <script>
+        // Função para abrir o modal e exibir a imagem clicada
+        function showModal(element) {
+            const modal = document.getElementById("modal");
+            const modalImg = document.getElementById("modal-img");
+            
+            // Define a fonte da imagem do modal como a mesma da imagem clicada
+            modalImg.src = element.src;
+            
+            // Exibe o modal
+            modal.style.display = "flex";
+        }
+    
+        // Função para fechar o modal ao clicar fora da imagem
+        function closeModal() {
+            const modal = document.getElementById("modal");
+            
+            // Esconde o modal
+            modal.style.display = "none";
+        }
+    </script>
+</main>
+
+</body>
+</html>
