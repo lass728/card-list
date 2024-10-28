@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curva de Mana do Deck</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h2 {
+            text-align: center;
+        }
+        .card-input {
+            margin-bottom: 10px;
+        }
+        .card-list {
+            margin-top: 20px;
+        }
+        .chart-container {
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+        }
+        #manaCurveChart {
+            width: 100%;
+            height: 400px;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Curva de Mana do Deck</h2>
+
+<div id="cardInputs">
+    <h3>Insira as Cartas do Deck</h3>
+    <div>
+        <label>Nome da Carta: <input type="text" id="cardName"></label>
+        <label>Custo de Mana: <input type="number" id="manaCost" min="0"></label>
+        <label>Cópias: <input type="number" id="cardCopies" min="1" value="1"></label>
+        <button onclick="addCard()">Adicionar Carta</button>
+    </div>
+</div>
+
+<div class="chart-container">
+    <canvas id="manaCurveChart"></canvas>
+</div>
+
+<div id="cardList" class="card-list">
+    <h3>Lista de Cartas</h3>
+    <ul id="cardDisplayList"></ul>
+</div>
+
+<!-- Adicionando o Chart.js para gerar o gráfico -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const cards = [];
+    let manaCurveChart;
+
+    function initChart() {
+        const ctx = document.getElementById('manaCurveChart').getContext('2d');
+        manaCurveChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Quantidade',
+                    data: [],
+                    backgroundColor: 'red'
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Custo de Mana Convertido' },
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Quantidade' },
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    }
+
+    function updateChart() {
+        const manaCosts = {};
+
+        cards.forEach(card => {
+            manaCosts[card.cost] = (manaCosts[card.cost] || 0) + card.copies;
+        });
+
+        const labels = [];
+        const data = [];
+        for (let i = 0; i <= Math.max(...Object.keys(manaCosts).map(Number), 0); i++) {
+            labels.push(i);
+            data.push(manaCosts[i] || 0);
+        }
+
+        manaCurveChart.data.labels = labels;
+        manaCurveChart.data.datasets[0].data = data;
+        manaCurveChart.update();
+    }
+
+    function addCard() {
+        const cardName = document.getElementById('cardName').value;
+        const manaCost = parseInt(document.getElementById('manaCost').value);
+        const cardCopies = parseInt(document.getElementById('cardCopies').value);
+
+        if (!cardName || isNaN(manaCost) || isNaN(cardCopies) || cardCopies < 1) {
+            alert("Por favor, insira um nome válido, um custo de mana e um número de cópias maior que 0.");
+            return;
+        }
+
+        if (cards.reduce((acc, card) => acc + card.copies, 0) + cardCopies > 30) {
+            alert("O total de cartas no deck não pode exceder 30.");
+            return;
+        }
+
+        cards.push({ name: cardName, cost: manaCost, copies: cardCopies });
+        
+        document.getElementById('cardName').value = '';
+        document.getElementById('manaCost').value = '';
+        document.getElementById('cardCopies').value = '1';
+        displayCardList();
+        updateChart();
+    }
+
+    function removeCard(index) {
+        cards.splice(index, 1);
+        displayCardList();
+        updateChart();
+    }
+
+    function displayCardList() {
+        const cardDisplayList = document.getElementById('cardDisplayList');
+        cardDisplayList.innerHTML = '';
+        cards.forEach((card, index) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${card.name} - Custo de Mana: ${card.cost}, Cópias: ${card.copies}`;
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = "Remover";
+            deleteButton.style.marginLeft = "10px";
+            deleteButton.onclick = () => removeCard(index);
+            listItem.appendChild(deleteButton);
+            cardDisplayList.appendChild(listItem);
+        });
+    }
+
+    // Inicializar o gráfico quando a página carrega
+    window.onload = initChart;
+</script>
+
+</body>
+</html>
