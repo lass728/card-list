@@ -78,6 +78,86 @@
             color: #333333;
             font-size: 14px;
         }
+
+
+
+        #pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+
+#filters select, #filters input[type="text"] {
+    padding: 10px 15px; /* Aumenta o tamanho dos filtros */
+    font-size: 16px; /* Aumenta o tamanho da fonte */
+    color: #edf3e4;
+    background-color: #e07a5f;
+    border: none;
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    appearance: none; /* Remove estilo padrão de dropdowns */
+}
+
+#filters select:hover, #filters input[type="text"]:hover {
+    background-color: #f4a261; /* Cor de destaque ao passar o mouse */
+    transform: scale(1.05); /* Leve efeito de aumento */
+}
+
+#filters select:focus, #filters input[type="text"]:focus {
+    outline: none; /* Remove borda de foco padrão */
+    background-color: #f4a261; /* Cor de foco */
+    transform: scale(1.05);
+}
+
+#apply-filters {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #edf3e4;
+    background-color: #e07a5f;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#apply-filters:hover {
+    background-color: #f4a261;
+    transform: scale(1.05);
+}
+
+#apply-filters:focus {
+    outline: none;
+    transform: scale(1.05);
+}
+
+#pagination button {
+    padding: 10px 20px; /* Aumenta o tamanho do botão */
+    font-size: 16px; /* Texto maior para facilitar a leitura */
+    color: #edf3e4;
+    background-color: #e07a5f; /* Cor de fundo para destacar */
+    border: none;
+    border-radius: 5px; /* Bordas arredondadas para um visual moderno */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#pagination button:hover {
+    background-color: #f4a261; /* Cor de destaque ao passar o mouse */
+    transform: scale(1.05); /* Pequeno aumento ao passar o mouse */
+}
+
+#pagination button:disabled {
+    background-color: #bfbfbf;
+    color: #ffffff;
+    cursor: not-allowed;
+    transform: none;
+}
     
         /* Media query para telas pequenas */
         @media (max-width: 600px) {
@@ -181,7 +261,7 @@
             <option value="desc">Decrescente</option>
         </select>
 
-        <button id="apply-filters">Aplicar Filtros</button>
+        
     </div>
 
     <div id="card-container"></div>
@@ -969,112 +1049,114 @@
         ];
 
         
-    let currentPage = 1;
-    const cardsPerPage = 16; // Limite de cartas por página
-    let filteredCards = []; // Array global para armazenar cartas filtradas
+        let currentPage = 1;
+const cardsPerPage = 16;
+let filteredCards = [];
 
-    function filterCards() {
-        const searchValue = document.getElementById("search").value.toLowerCase();
-        const loyaltyValue = document.getElementById("loyalty-filter").value;
-        const typeValue = document.getElementById("type-filter").value;
-        const raceValue = document.getElementById("race-filter").value; // Filtro de raça
-        const costValue = document.getElementById("cost-filter").value;
+function filterCards() {
+    const searchValue = document.getElementById("search").value.toLowerCase();
+    const loyaltyValue = document.getElementById("loyalty-filter").value;
+    const typeValue = document.getElementById("type-filter").value;
+    const raceValue = document.getElementById("race-filter").value;
+    const costValue = document.getElementById("cost-filter").value;
 
-        filteredCards = cards; // Resetando a lista filtrada para o valor inicial
+    filteredCards = cards;
 
-        // Filtro por nome
-        if (searchValue) {
-            filteredCards = filteredCards.filter(card => card.nome.toLowerCase().includes(searchValue));
-        }
+    if (searchValue) filteredCards = filteredCards.filter(card => card.nome.toLowerCase().includes(searchValue));
+    if (loyaltyValue) filteredCards = filteredCards.filter(card => card.lealdade && card.lealdade.includes(loyaltyValue));
+    if (typeValue) filteredCards = filteredCards.filter(card => card.tipo === typeValue);
+    if (raceValue) filteredCards = filteredCards.filter(card => card.raça && card.raça.includes(raceValue));
+    if (costValue === "asc") filteredCards.sort((a, b) => a.custo - b.custo);
+    else if (costValue === "desc") filteredCards.sort((a, b) => b.custo - a.custo);
 
-        // Filtro por lealdade
-        if (loyaltyValue) {
-            filteredCards = filteredCards.filter(card => card.lealdade && card.lealdade.includes(loyaltyValue));
-        }
-
-        // Filtro por tipo
-        if (typeValue) {
-            filteredCards = filteredCards.filter(card => card.tipo === typeValue);
-        }
-
-        // Filtro por raça
-        if (raceValue) {
-            filteredCards = filteredCards.filter(card => card.raça && card.raça.includes(raceValue));
-        }
-
-        // Filtro por custo
-        if (costValue === "asc") {
-            filteredCards.sort((a, b) => a.custo - b.custo);
-        } else if (costValue === "desc") {
-            filteredCards.sort((a, b) => b.custo - a.custo);
-        }
-
-        currentPage = 1; // Reiniciar para a primeira página sempre que os filtros mudarem
-        displayCards();
-    }
-
-    function displayCards() {
-        const cardContainer = document.getElementById("card-container");
-        const totalCardsText = document.getElementById("total-cards");
-        cardContainer.innerHTML = "";
-
-        const start = (currentPage - 1) * cardsPerPage;
-        const end = start + cardsPerPage;
-        const cardsToShow = filteredCards.slice(start, end);
-
-        if (cardsToShow.length === 0) {
-            cardContainer.innerHTML = "<p>Nenhum card encontrado</p>";
-        } else {
-            cardsToShow.forEach(card => {
-                const cardElement = document.createElement("div");
-                cardElement.className = "card";
-                cardElement.innerHTML = `
-                    <img src="${card.imagem}" alt="${card.nome}" onclick="window.open('${card.imagem}', '_blank');">
-                    <h3>${card.nome}</h3>
-                    <p>Custo: ${card.custo}</p>
-                    <p>Lealdade: ${card.lealdade || "Nenhuma"}</p>
-                    <p>Tipo: ${card.tipo}</p>
-                `;
-                cardContainer.appendChild(cardElement);
-            });
-        }
-
-        totalCardsText.textContent = `Número total de cartas: ${filteredCards.length}`;
-        updatePaginationControls();
-    }
-
-    function updatePaginationControls() {
-        const paginationContainer = document.getElementById("pagination");
-        paginationContainer.innerHTML = "";
-
-        const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
-
-        if (totalPages > 1) {
-            const prevButton = document.createElement("button");
-            prevButton.textContent = "Anterior";
-            prevButton.disabled = currentPage === 1;
-            prevButton.onclick = () => {
-                currentPage--;
-                displayCards();
-            };
-            paginationContainer.appendChild(prevButton);
-
-            const nextButton = document.createElement("button");
-            nextButton.textContent = "Próximo";
-            nextButton.disabled = currentPage === totalPages;
-            nextButton.onclick = () => {
-                currentPage++;
-                displayCards();
-            };
-            paginationContainer.appendChild(nextButton);
-        }
-    }
-
-    document.getElementById("apply-filters").addEventListener("click", filterCards);
-
-    // Exibe todas as cartas inicialmente
-    filteredCards = cards; // Inicializar com todas as cartas
+    currentPage = 1;
     displayCards();
+}
+
+function displayCards() {
+    const cardContainer = document.getElementById("card-container");
+    const totalCardsText = document.getElementById("total-cards");
+    cardContainer.innerHTML = "";
+
+    const start = (currentPage - 1) * cardsPerPage;
+    const end = start + cardsPerPage;
+    const cardsToShow = filteredCards.slice(start, end);
+
+    if (cardsToShow.length === 0) {
+        cardContainer.innerHTML = "<p>Nenhum card encontrado</p>";
+    } else {
+        cardsToShow.forEach(card => {
+            const cardElement = document.createElement("div");
+            cardElement.className = "card";
+            cardElement.innerHTML = `
+                <img src="${card.imagem}" alt="${card.nome}" onclick="window.open('${card.imagem}', '_blank');">
+                <h3>${card.nome}</h3>
+                <p>Custo: ${card.custo}</p>
+                <p>Lealdade: ${card.lealdade || "Nenhuma"}</p>
+                <p>Tipo: ${card.tipo}</p>
+            `;
+            cardContainer.appendChild(cardElement);
+        });
+    }
+
+    totalCardsText.textContent = `Número total de cartas: ${filteredCards.length}`;
+    updatePaginationControls();
+}
+
+function updatePaginationControls() {
+    const paginationContainer = document.getElementById("pagination");
+    paginationContainer.innerHTML = "";
+
+    const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
+
+    if (totalPages > 1) {
+        const prevButton = document.createElement("button");
+        prevButton.textContent = "Anterior";
+        prevButton.disabled = currentPage === 1;
+        prevButton.onclick = () => {
+            currentPage--;
+            displayCards();
+        };
+        paginationContainer.appendChild(prevButton);
+
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement("button");
+            pageButton.textContent = i;
+            pageButton.className = i === currentPage ? "active-page" : "";
+            pageButton.onclick = () => {
+                currentPage = i;
+                displayCards();
+            };
+            paginationContainer.appendChild(pageButton);
+        }
+
+        const nextButton = document.createElement("button");
+        nextButton.textContent = "Próximo";
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.onclick = () => {
+            currentPage++;
+            displayCards();
+        };
+        paginationContainer.appendChild(nextButton);
+    }
+}
+
+function debounce(func, delay) {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+
+document.getElementById("search").addEventListener("input", debounce(filterCards, 300));
+document.getElementById("loyalty-filter").addEventListener("change", filterCards);
+document.getElementById("type-filter").addEventListener("change", filterCards);
+document.getElementById("race-filter").addEventListener("change", filterCards);
+document.getElementById("cost-filter").addEventListener("change", filterCards);
+
+filteredCards = cards;
+displayCards();
 </script>
 </body>
 </html>
