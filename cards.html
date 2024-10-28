@@ -256,9 +256,16 @@
         </select>
 
         <select id="cost-filter">
-            <option value="">Custo</option>
+            <option value="">Selecionar Custo</option>
             <option value="asc">Crescente</option>
             <option value="desc">Decrescente</option>
+            <option value="1">Custo 1</option>
+            <option value="2">Custo 2</option>
+            <option value="3">Custo 3</option>
+            <option value="4">Custo 4</option>
+            <option value="5">Custo 5</option>
+            <option value="6">Custo 6</option>
+            <option value="7+">Custo 7+</option>
         </select>
 
         
@@ -1066,8 +1073,15 @@ function filterCards() {
     if (loyaltyValue) filteredCards = filteredCards.filter(card => card.lealdade && card.lealdade.includes(loyaltyValue));
     if (typeValue) filteredCards = filteredCards.filter(card => card.tipo === typeValue);
     if (raceValue) filteredCards = filteredCards.filter(card => card.raça && card.raça.includes(raceValue));
-    if (costValue === "asc") filteredCards.sort((a, b) => a.custo - b.custo);
-    else if (costValue === "desc") filteredCards.sort((a, b) => b.custo - a.custo);
+
+    // Filtro de custos
+    if (costValue === "asc") {
+        filteredCards.sort((a, b) => a.custo - b.custo);
+    } else if (costValue === "desc") {
+        filteredCards.sort((a, b) => b.custo - a.custo);
+    } else if (costValue) {
+        filteredCards = filteredCards.filter(card => card.custo == costValue || (costValue === "7+" && card.custo >= 7));
+    }
 
     currentPage = 1;
     displayCards();
