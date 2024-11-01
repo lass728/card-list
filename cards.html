@@ -238,6 +238,7 @@
         <select id="race-filter">
             <option value="">Todas as raças</option>
 <option value="Dragão">Dragão</option>
+<option value="Druida">Druida</option>
 <option value="Elemental">Elemental</option>
 <option value="Espectro">Espectro</option>
 <option value="Espírito">Espírito</option>
@@ -294,6 +295,16 @@
 
             //Koncórdia
             {
+                nome: "Juno, Protetora Verde",
+                custo: 1,
+                lealdade: ["Koncórdia"],
+                raça: ["Humano", "Druida"], // Usando um array para permitir múltiplas raças
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/KonCre3.png"
+            },
+
+
+            {
                 nome: "Pastor Valente",
                 custo: 1,
                 lealdade: ["Koncórdia"],
@@ -302,6 +313,35 @@
                 imagem: "MISC/CARDS/KonCre1.png"
             },
 
+
+            {
+                nome: "Azurek",
+                custo: 6,
+                lealdade: ["Koncórdia"],
+                raça: ["Dragão"], // Usando um array para permitir múltiplas raças
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/KonCre4.png"
+            },
+
+
+            {
+                nome: "N’Kala",
+                custo: 9,
+                lealdade: ["Koncórdia"],
+                raça: ["Espírito"], // Usando um array para permitir múltiplas raças
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/KonCre2.png"
+            },
+
+
+
+            {
+                nome: "Aniquilar",
+                custo: 4,
+                lealdade: ["Koncórdia"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/KonSp3.png"
+            },
 
 
 
@@ -320,6 +360,15 @@
                 lealdade: ["Koncórdia"],
                 tipo: "Ação",
                 imagem: "MISC/CARDS/KonSp2.png"
+            },
+
+
+            {
+                nome: "Ruína",
+                custo: 6,
+                lealdade: ["Koncórdia"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/KonSp4.png"
             },
 
 
