@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Lista de Cards</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            max-width: 100vw;
+        }
+    
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px; /* Reduzido para melhor adaptação em telas pequenas */
+            color: #ffffff;
+            background-color: #4b2e1e; /* Marrom profundo */
+            padding: 20px;
+        }
+    
+        h1 {
+            font-size: 24px; /* Ajustado para telas pequenas */
+            text-align: center;
+            margin-top: 20px;
+            color: #edf3e4;
+            font-weight: bold;
+        }
+    
+        #filters {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap; /* Permite que os filtros se alinhem em várias linhas em telas pequenas */
+        }
+    
+        #card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+    
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid #e07a5f;
+            border-radius: 8px;
+            background-color: white;
+            text-align: center;
+            width: 150px; /* Largura inicial das cartas */
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+    
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
+        }
+    
+        .card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    
+        .card h3, .card p {
+            margin-top: auto;
+            color: #333333;
+        }
+    
+        .card p {
+            color: #333333;
+            font-size: 14px;
+        }
+
+
+
+        #pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+
+#filters select, #filters input[type="text"] {
+    padding: 10px 15px; /* Aumenta o tamanho dos filtros */
+    font-size: 16px; /* Aumenta o tamanho da fonte */
+    color: #edf3e4;
+    background-color: #e07a5f;
+    border: none;
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    appearance: none; /* Remove estilo padrão de dropdowns */
+}
+
+#filters select:hover, #filters input[type="text"]:hover {
+    background-color: #f4a261; /* Cor de destaque ao passar o mouse */
+    transform: scale(1.05); /* Leve efeito de aumento */
+}
+
+#filters select:focus, #filters input[type="text"]:focus {
+    outline: none; /* Remove borda de foco padrão */
+    background-color: #f4a261; /* Cor de foco */
+    transform: scale(1.05);
+}
+
+#apply-filters {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #edf3e4;
+    background-color: #e07a5f;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#apply-filters:hover {
+    background-color: #f4a261;
+    transform: scale(1.05);
+}
+
+#apply-filters:focus {
+    outline: none;
+    transform: scale(1.05);
+}
+
+#pagination button {
+    padding: 10px 20px; /* Aumenta o tamanho do botão */
+    font-size: 16px; /* Texto maior para facilitar a leitura */
+    color: #edf3e4;
+    background-color: #e07a5f; /* Cor de fundo para destacar */
+    border: none;
+    border-radius: 5px; /* Bordas arredondadas para um visual moderno */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#pagination button:hover {
+    background-color: #f4a261; /* Cor de destaque ao passar o mouse */
+    transform: scale(1.05); /* Pequeno aumento ao passar o mouse */
+}
+
+#pagination button:disabled {
+    background-color: #bfbfbf;
+    color: #ffffff;
+    cursor: not-allowed;
+    transform: none;
+}
+    
+        /* Media query para telas pequenas */
+        @media (max-width: 600px) {
+            body {
+                font-size: 14px;
+                padding: 10px;
+            }
+    
+            h1 {
+                font-size: 20px;
+                margin-top: 15px;
+            }
+    
+            #filters {
+                gap: 5px;
+            }
+    
+            .card {
+                width: 120px; /* Reduz a largura das cartas em telas pequenas */
+                padding: 10px;
+            }
+    
+            .card h3 {
+                font-size: 16px;
+            }
+    
+            .card p {
+                font-size: 12px;
+            }
+        }
+    
+        /* Media query para telas médias */
+        @media (min-width: 601px) and (max-width: 900px) {
+            .card {
+                width: 130px; /* Ajuste de largura para telas médias */
+            }
+    
+            .card h3 {
+                font-size: 18px;
+            }
+    
+            .card p {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Informações</a></li>
+            <li><a href="cards.html">Cards</a></li>
+            <li><a href="gerador.html">Gerador de Cards</a></li>
+        </ul>
+    </nav>
+
+    <h1>Lista de Cards</h1>
+    
+    <div id="filters">
+        <input type="text" id="search" placeholder="Buscar por nome...">
+        
+        <select id="loyalty-filter">
+            <option value="">Selecione a lealdade</option>
+            <option value="Koncórdia">Koncórdia</option>
+            <option value="Gnoze">Gnoze</option>
+            <option value="Longnus">Longnus</option>
+            <option value="Sestra">Sestra</option>
+        </select>
+
+        <select id="type-filter">
+            <option value="">Todos os tipos</option>
+            <option value="Líder">Líderes</option>
+            <option value="Criatura">Criaturas</option>
+            <option value="Ação">Ações</option>
+            <option value="Item">Itens</option>
+        </select>
+
+        <select id="race-filter">
+            <option value="">Todas as raças</option>
+<option value="Dragão">Dragão</option>
+<option value="Elemental">Elemental</option>
+<option value="Espectro">Espectro</option>
+<option value="Espírito">Espírito</option>
+<option value="Gato">Gato</option>
+<option value="Gigante">Gigante</option>
+<option value="Goblin">Goblin</option>
+<option value="Guerreiro">Guerreiro</option>
+<option value="Humano">Humano</option>
+<option value="Ladino">Ladino</option>
+<option value="Mago">Mago</option>
+<option value="Martide">Martide</option>
+<option value="Morto-Vivo">Morto-Vivo</option>
+<option value="Pirata">Pirata</option>
+<option value="Planta">Planta</option>
+<option value="Yeti">Yeti</option>
+        </select>
+
+        <select id="cost-filter">
+            <option value="">Selecionar Custo</option>
+            <option value="asc">Crescente</option>
+            <option value="desc">Decrescente</option>
+            <option value="1">Custo 1</option>
+            <option value="2">Custo 2</option>
+            <option value="3">Custo 3</option>
+            <option value="4">Custo 4</option>
+            <option value="5">Custo 5</option>
+            <option value="6">Custo 6</option>
+            <option value="7+">Custo 7+</option>
+        </select>
+
+        
+    </div>
+
+    <div id="card-container"></div>
+
+    <p id="total-cards"></p>
+<div id="pagination">
+    <!-- Controles de paginação serão exibidos aqui -->
+</div>
+
+    <script src="script.js"></script>
+    <script>
+        const cards = [
+            //Koncórdia
+            {
+                nome: "Pastor Valente",
+                custo: 1,
+                lealdade: ["Koncórdia"],
+                raça: ["Humano"], // Usando um array para permitir múltiplas raças
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/KonCre1.png"
+            },
+
+
+
+
+            {
+                nome: "Luz de Koncórdia",
+                custo: 4,
+                lealdade: ["Koncórdia"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/KonSp1.png"
+            },
+
+
+             {
+                nome: "Florescer",
+                custo: 5,
+                lealdade: ["Koncórdia"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/KonSp2.png"
+            },
+
+
+
+
+
+            //Gnoze
+            {
+                nome: "Anysse",
+                custo: "N/A",
+                lealdade: ["Gnoze"],
+                raça: ["Humano","Mago"], 
+                tipo: "Líder",
+                imagem: "MISC/CARDS/Gnoze1.png"
+            },
+
+
+            {
+                nome: "Bando de Martide",
+                custo: 1,
+                lealdade: ["Gnoze"],
+                raça: ["Martide"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/GnozeCre4.png"
+            },
+
+
+
+            {
+                nome: "Imediato Martide",
+                custo: 1,
+                lealdade: ["Gnoze","Longnus"],
+                raça: ["Martide", "Pirata"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/zDuplaLealdade2.png"
+            },
+
+            {
+                nome: "Martide Casmurro",
+                custo: 1,
+                lealdade: ["Gnoze"],
+                raça: ["Martide"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/GnozeCre1.png"
+            },
+
+            {
+                nome: "Martide Inquieto",
+                custo: 1,
+                lealdade: ["Gnoze","Sestra"],
+                raça: ["Martide"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/zDuplaLealdade7.png"
+            },
+
+
+            {
+                nome: "Martide Regurgitador",
+                custo: 1,
+                lealdade: ["Gnoze", "Sestra"],
+                raça: ["Martide"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/GnozeCre5.png"
+            },
+
+
+            {
+                nome: "Rastreadora Gnoziana",
+                custo: 1,
+                lealdade: ["Gnoze"],
+                raça: ["Humano"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/GnozeCre6.png"
+            },
+
+
+            {
+                nome: "Chef Martide",
+                custo: 2,
+                lealdade: ["Gnoze"],
+                raça: ["Martide"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/GnozeCre9.png"
+            },
+
+
+            {
+                nome: "Evocadora Tintespírito",
+                custo: 2,
+                lealdade: ["Gnoze","Sestra"],
+                raça: ["Humano", "Mago"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/zDuplaLealdade3.png"
+            },
+
+
+            {
+                nome: "Familiar de Cheung",
+                custo: 2,
+                lealdade: ["Gnoze","Sestra"],
+                raça: ["Gato"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/zDuplaLealdade5.png"
+            },
+
+
+            {
+                nome: "Martide Amotinador",
+                custo: 2,
+                lealdade: ["Gnoze","Longnus"],
+                raça: ["Martide"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/zDuplaLealdade8.png"
+            },
+
+
+            {
+                nome: "Martide Atraente",
+                custo: 2,
+                lealdade: ["Gnoze"],
+                raça: ["Martide"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/GnozeCre2.png"
+            },
+
+
+            {
+                nome: "Maya, Chrononauta",
+                custo: 2,
+                lealdade: ["Gnoze","Sestra"],
+                raça: ["Humano"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/zDuplaLealdade6.png"
+            },
+
+
+
+            {
+                nome: "Diretor Albus Eldric",
+                custo: 3,
+                lealdade: ["Gnoze"],
+                raça: ["Humano", "Mago"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/GnozeCre8.png"
+            },
+
+
+            {
+                nome: "Professora Cheung",
+                custo: 3,
+                lealdade: ["Gnoze","Sestra"],
+                raça: ["Humano", "Mago"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/zDuplaLealdade1.png"
+            },
+
+
+            {
+                nome: "Capitã Yodora",
+                custo: 4,
+                lealdade: ["Gnoze","Longnus"],
+                raça: ["Humano", "Pirata"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/zDuplaLealdade4.png"
+            },
+
+
+
+            {
+                nome: "Yeti Furioso",
+                custo: 4,
+                lealdade: ["Gnoze"],
+                raça: ["Yeti"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/GnozeCre7.png"
+            },
+
+
+            {
+                nome: "Leviatã",
+                custo: 7,
+                lealdade: ["Gnoze"],
+                raça: ["Dragão"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/GnozeCre3.png"
+            },
+
+
+
+
+
+            //AÇÕES DE GNOZE
+
+            {
+                nome: "Barreira de Kayn",
+                custo: 1,
+                lealdade: ["Gnoze"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/GnozeSp4.png"
+            },
+
+            {
+                nome: "Tiro Desviado",
+                custo: 1,
+                lealdade: ["Gnoze"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/GnozeSp5.png"
+            },
+
+
+            {
+                nome: "Cancelar",
+                custo: 3,
+                lealdade: ["Gnoze"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/GnozeSp1.png"
+            },
+
+
+            {
+                nome: "Nevasca",
+                custo: 4,
+                lealdade: ["Gnoze"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/GnozeSp2.png"
+            },
+
+
+            {
+                nome: "Isca Martide",
+                custo: 7,
+                lealdade: ["Gnoze"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/GnozeSp3.png"
+            },
+
+
+
+
+            //Longnus
+            {
+                nome: "Zahira",
+                custo: "N/A",
+                lealdade: ["Longnus"],
+                raça: ["Humano","Ladino"], 
+                tipo: "Líder",
+                imagem: "MISC/CARDS/Long1.png"
+            },
+
+            {
+                nome: "Wukong",
+                custo: "N/A",
+                lealdade: ["Longnus"],
+                raça: ["Humano","Ladino"], 
+                tipo: "Líder",
+                imagem: "MISC/CARDS/Long2.png"
+            },
+
+            {
+                nome: "Bando de Goblins",
+                custo: 1,
+                lealdade: ["Longnus"],
+                raça: ["Goblin"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/LongCre13.png"
+            },
+
+            {
+                nome: "Batedor Goblin",
+                custo: 1,
+                lealdade: ["Longnus"],
+                raça: ["Goblin"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/LongCre6.png"
+            },
+
+
+            {
+                nome: "Bombardeiro Goblin",
+                custo: 1,
+                lealdade: ["Longnus"],
+                raça: ["Goblin"], // Usando um array para permitir múltiplas raças
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/LongCre1.png"
+            },
+
+            {
+                nome: "Fada de Fogo",
+                custo: 1,
+                lealdade: ["Longnus"],
+                raça: ["Elemental"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/LongCre9.png"
+            },
+
+
+            {
+                nome: "Lança do Dragão",
+                custo: 1,
+                lealdade: ["Longnus"],
+                raça: ["Humano","Guerreiro"], // Exemplo de criatura com múltiplas raças
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/LongCre3.png"
+            },
+
+            {
+                nome: "Patife Goblin",
+                custo: 1,
+                lealdade: ["Longnus"],
+                raça: ["Goblin","Pirata"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/LongCre15.png"
+            },
+
+
+            {
+                nome: "Alquimista Goblin",
+                custo: 2,
+                lealdade: ["Longnus"],
+                raça: ["Goblin"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/LongCre14.png"
+            },
+
+
+            {
+                nome: "Corsária Goblin",
+                custo: 2,
+                lealdade: ["Longnus"],
+                raça: ["Goblin","Pirata"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/LongCre11.png"
+            },
+
+
+            {
+                nome: "Gigante da Montanha",
+                custo: 2,
+                lealdade: ["Longnus"],
+                raça: ["Gigante"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/LongCre2.png"
+            },
+
+            {
+                nome: "Masamune",
+                custo: 2,
+                lealdade: ["Longnus"],
+                raça: ["Gato","Guerreiro"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/LongCre4.png"
+            },
+
+
+            {
+                nome: "Captuda Goblin",
+                custo: 3,
+                lealdade: ["Longnus"],
+                raça: ["Goblin"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/LongCre7.png"
+            },
+
+
+            {
+                nome: "Desafiadora Veterana",
+                custo: 3,
+                lealdade: ["Longnus"],
+                raça: ["Humano","Guerreiro"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/LongCre10.png"
+            },
+
+
+            {
+                nome: "Caçador Experiente",
+                custo: 4,
+                lealdade: ["Longnus"],
+                raça: ["Humano"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/LongCre8.png"
+            },
+
+
+            {
+                nome: "Dragão de Chifre",
+                custo: 5,
+                lealdade: ["Longnus"],
+                raça: ["Dragão"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/LongCre5.png"
+            },
+
+
+
+            //AÇÕES DE LONGNUS
+            {
+                nome: "Bando",
+                custo: 1,
+                lealdade: ["Longnus"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/LongSp2.png"
+            },
+
+            {
+                nome: "Bola de Fogo",
+                custo: 1,
+                lealdade: ["Longnus"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/LongSp5.png"
+            },
+
+            {
+                nome: "Disparar Canhões",
+                custo: 1,
+                lealdade: ["Longnus"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/LongSp6.png"
+            },
+
+            {
+                nome: "Frenesi de Combate",
+                custo: 1,
+                lealdade: ["Longnus"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/LongSp1.png"
+            },
+
+            {
+                nome: "Lei do Lobo",
+                custo: 1,
+                lealdade: ["Longnus"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/LongSp7.png"
+            },
+
+
+            {
+                nome: "Enxame de Goblins",
+                custo: 2,
+                lealdade: ["Longnus"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/LongSp11.png"
+            },
+
+
+
+            {
+                nome: "Golpe Baixo",
+                custo: 2,
+                lealdade: ["Longnus"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/LongSp8.png"
+            },
+
+
+            {
+                nome: "Ímpeto de Combate",
+                custo: 3,
+                lealdade: ["Longnus"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/LongSp3.png"
+            },
+
+
+            {
+                nome: "Relâmpago",
+                custo: 3,
+                lealdade: ["Longnus"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/LongSp10.png"
+            },
+
+
+
+            {
+                nome: "Reforçar Arsenal",
+                custo: 4,
+                lealdade: ["Longnus"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/LongSp4.png"
+            },
+
+
+            
+
+            {
+                nome: "Ato de Bravura",
+                custo: 5,
+                lealdade: ["Longnus"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/LongSp9.png"
+            },
+
+
+
+
+            //SESTRA Criaturas
+            {
+                nome: "Zéfira",
+                custo: "N/A",
+                lealdade: ["Sestra"],
+                raça: ["Humano","Mago"], 
+                tipo: "Líder",
+                imagem: "MISC/CARDS/Sestra1.png"
+            },
+
+            {
+                nome: "Kayn",
+                custo: "N/A",
+                lealdade: ["Sestra"],
+                raça: ["Humano","Mago"], 
+                tipo: "Líder",
+                imagem: "MISC/CARDS/Sestra2.png"
+            },
+
+
+            {
+                nome: "Aprendiz das Sombras",
+                custo: 1,
+                lealdade: ["Sestra"],
+                raça: ["Humano", "Ladino"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/SestraCre6.png"
+            },
+
+
+            {
+                nome: "Carniçal Demente",
+                custo: 1,
+                lealdade: ["Sestra"],
+                raça: ["Morto-Vivo"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/SestraCre10.png"
+            },
+
+
+            {
+                nome: "Espectro Insidioso",
+                custo: 1,
+                lealdade: ["Sestra"],
+                raça: ["Espectro"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/SestraCre1.png"
+            },
+
+            {
+                nome: "Espírito Sonolento",
+                custo: 1,
+                lealdade: ["Sestra"],
+                raça: ["Espírito"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/SestraCre5.png"
+            },
+
+
+            {
+                nome: "Ninja Astuto",
+                custo: 1,
+                lealdade: ["Sestra"],
+                raça: ["Humano", "Ladino"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/SestraCre2.png"
+            },
+
+
+            {
+                nome: "Espectro Irritante",
+                custo: 2,
+                lealdade: ["Sestra"],
+                raça: ["Espectro"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/SestraCre3.png"
+            },
+
+
+            {
+                nome: "Planta Devoradora",
+                custo: 2,
+                lealdade: ["Sestra"],
+                raça: ["Planta"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/SestraCre7.png"
+            },
+
+
+            {
+                nome: "Carniçal Bruto",
+                custo: 3,
+                lealdade: ["Sestra"],
+                raça: ["Morto-Vivo"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/SestraCre11.png"
+            },
+
+
+            {
+                nome: "Morgrain",
+                custo: 4,
+                lealdade: ["Sestra"],
+                raça: ["Dragão","Espectro"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/SestraCre8.png"
+            },
+
+            {
+                nome: "Abominação Ancestral",
+                custo: 7,
+                lealdade: ["Sestra"],
+                raça: ["Espectro"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/SestraCre4.png"
+            },
+
+
+            {
+                nome: "Severus Caldwell",
+                custo: 7,
+                lealdade: ["Sestra"],
+                raça: ["Humano", "Mago"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/SestraCre9.png"
+            },
+
+
+            {
+                nome: "Amálgama Maturin",
+                custo: 8,
+                lealdade: ["Sestra"],
+                raça: ["Dragão","Elemental","Espectro","Espírito","Gato","Gigante",
+                    "Goblin","Guerreiro","Humano","Ladino","Mago","Martide","Morto-Vivo","Pirata",
+                    "Planta","Yeti"
+                ],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/SestraCre12.png"
+            },
+
+
+ //AÇÕES DE SESTRA
+
+            
+ 
+            { nome: "Aprisionar",
+                custo: 1,
+                lealdade: ["Sestra"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/SestraSp3.png"
+            },
+
+
+            { nome: "Servidão Constante",
+                custo: 1,
+                lealdade: ["Sestra"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/SestraSp9.png"
+            },
+
+
+            { nome: "Impacto Malicioso",
+                custo: 2,
+                lealdade: ["Sestra"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/SestraSp5.png"
+            },
+
+
+            { nome: "Revirar Tumba",
+                custo: 2,
+                lealdade: ["Sestra"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/SestraSp4.png"
+            },
+
+
+ {
+                nome: "Ritual da Noite",
+                custo: 2,
+                lealdade: ["Sestra"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/SestraSp2.png"
+            },
+
+
+
+            {
+                nome: "Abate Cruel",
+                custo: 3,
+                lealdade: ["Sestra"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/SestraSp1.png"
+            },
+
+            { nome: "Colheita",
+                custo: 3,
+                lealdade: ["Sestra"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/SestraSp8.png"
+            },
+
+
+            { nome: "Chamado da Sombra",
+                custo: 4,
+                lealdade: ["Sestra"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/SestraSp6.png"
+            },
+
+            { nome: "Chamas Devastadoras",
+                custo: 5,
+                lealdade: ["Sestra"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/SestraSp7.png"
+            },
+
+
+            //ITENS
+            {
+                nome: "Cálice da Cobiça",
+                custo: 0,
+                tipo: "Item",
+                imagem: "MISC/CARDS/zfatem6.png"
+            },
+            {
+                nome: "Fragmento de Mana",
+                custo: 0,
+                tipo: "Item",
+                imagem: "MISC/CARDS/zfatem2.png"
+            },
+            {
+                nome: "Berrante Goblin",
+                custo: 1,
+                tipo: "Item",
+                imagem: "MISC/CARDS/zfatem5.png"
+            },
+            {
+                nome: "Frasco Vital",
+                custo: 1,
+                tipo: "Item",
+                imagem: "MISC/CARDS/zfatem1.png"
+            },
+             {
+                nome: "Gema de Apu",
+                custo: 1,
+                tipo: "Item",
+                imagem: "MISC/CARDS/zfatem7.png"
+            },
+            {
+                nome: "Moeda dos Kzhu's",
+                custo: 1,
+                tipo: "Item",
+                imagem: "MISC/CARDS/zfatem3.png"
+            },
+            {
+                nome: "Presa do Trovão",
+                custo: 3,
+                tipo: "Item",
+                imagem: "MISC/CARDS/zfatem4.png"
+            },
+            // Adicione mais cartas conforme necessário
+        ];
+
+        
+        let currentPage = 1;
+const cardsPerPage = 16;
+let filteredCards = [];
+
+function filterCards() {
+    const searchValue = document.getElementById("search").value.toLowerCase();
+    const loyaltyValue = document.getElementById("loyalty-filter").value;
+    const typeValue = document.getElementById("type-filter").value;
+    const raceValue = document.getElementById("race-filter").value;
+    const costValue = document.getElementById("cost-filter").value;
+
+    filteredCards = cards;
+
+    if (searchValue) filteredCards = filteredCards.filter(card => card.nome.toLowerCase().includes(searchValue));
+    if (loyaltyValue) filteredCards = filteredCards.filter(card => card.lealdade && card.lealdade.includes(loyaltyValue));
+    if (typeValue) filteredCards = filteredCards.filter(card => card.tipo === typeValue);
+    if (raceValue) filteredCards = filteredCards.filter(card => card.raça && card.raça.includes(raceValue));
+
+    // Filtro de custos
+    if (costValue === "asc") {
+        filteredCards.sort((a, b) => a.custo - b.custo);
+    } else if (costValue === "desc") {
+        filteredCards.sort((a, b) => b.custo - a.custo);
+    } else if (costValue) {
+        filteredCards = filteredCards.filter(card => card.custo == costValue || (costValue === "7+" && card.custo >= 7));
+    }
+
+    currentPage = 1;
+    displayCards();
+}
+
+function displayCards() {
+    const cardContainer = document.getElementById("card-container");
+    const totalCardsText = document.getElementById("total-cards");
+    cardContainer.innerHTML = "";
+
+    const start = (currentPage - 1) * cardsPerPage;
+    const end = start + cardsPerPage;
+    const cardsToShow = filteredCards.slice(start, end);
+
+    if (cardsToShow.length === 0) {
+        cardContainer.innerHTML = "<p>Nenhum card encontrado</p>";
+    } else {
+        cardsToShow.forEach(card => {
+            const cardElement = document.createElement("div");
+            cardElement.className = "card";
+            cardElement.innerHTML = `
+                <img src="${card.imagem}" alt="${card.nome}" onclick="window.open('${card.imagem}', '_blank');">
+                <h3>${card.nome}</h3>
+                <p>Custo: ${card.custo}</p>
+                <p>Lealdade: ${card.lealdade || "Nenhuma"}</p>
+                <p>Tipo: ${card.tipo}</p>
+            `;
+            cardContainer.appendChild(cardElement);
+        });
+    }
+
+    totalCardsText.textContent = `Número total de cartas: ${filteredCards.length}`;
+    updatePaginationControls();
+}
+
+function updatePaginationControls() {
+    const paginationContainer = document.getElementById("pagination");
+    paginationContainer.innerHTML = "";
+
+    const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
+
+    if (totalPages > 1) {
+        const prevButton = document.createElement("button");
+        prevButton.textContent = "Anterior";
+        prevButton.disabled = currentPage === 1;
+        prevButton.onclick = () => {
+            currentPage--;
+            displayCards();
+        };
+        paginationContainer.appendChild(prevButton);
+
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement("button");
+            pageButton.textContent = i;
+            pageButton.className = i === currentPage ? "active-page" : "";
+            pageButton.onclick = () => {
+                currentPage = i;
+                displayCards();
+            };
+            paginationContainer.appendChild(pageButton);
+        }
+
+        const nextButton = document.createElement("button");
+        nextButton.textContent = "Próximo";
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.onclick = () => {
+            currentPage++;
+            displayCards();
+        };
+        paginationContainer.appendChild(nextButton);
+    }
+}
+
+function debounce(func, delay) {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+
+document.getElementById("search").addEventListener("input", debounce(filterCards, 300));
+document.getElementById("loyalty-filter").addEventListener("change", filterCards);
+document.getElementById("type-filter").addEventListener("change", filterCards);
+document.getElementById("race-filter").addEventListener("change", filterCards);
+document.getElementById("cost-filter").addEventListener("change", filterCards);
+
+filteredCards = cards;
+displayCards();
+</script>
+</body>
+</html>

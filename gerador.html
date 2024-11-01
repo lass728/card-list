@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Gerador de Cartas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+            margin: 0; /* Remove margens padrão */
+        }
+
+        .card-generator {
+            margin: auto;
+            max-width: 400px;
+            background: #d4a373;
+            border-radius: 12px; /* Borda arredondada */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Sombra mais suave */
+            padding: 20px;
+            transition: transform 0.2s; /* Efeito de transformação suave */
+        }
+
+        .card-generator:hover {
+            transform: scale(1.02); /* Leve aumento ao passar o mouse */
+        }
+
+        .card-preview {
+            position: relative;
+            display: inline-block;
+            margin: 20px 0;
+            width: 375px; 
+            height: 519.5px; 
+            overflow: hidden; 
+            border-radius: 20px; 
+            background-color: #eee; 
+            border: 2px solid #d4a373; /* Borda para destacar a prévia */
+        }
+
+        #baseCard {
+            width: 100%; 
+            height: auto; 
+            position: absolute; 
+            top: 0;
+            left: 0;
+            z-index: 2; 
+            border-radius: 20px; 
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #4b2e1e;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px; 
+            transition: background-color 0.3s; /* Transição suave de cor */
+        }
+
+        button:hover {
+            background-color: #e07a5f; /* Cor ao passar o mouse */
+        }
+
+        .uploaded-image {
+            position: absolute;
+            top: 0; 
+            left: 0;
+            width: 375px; 
+            height: 519.5px; 
+            object-fit: cover; 
+            border-radius: 20px; 
+            z-index: 1; 
+        }
+
+        /* Controles para mover e aplicar zoom na imagem */
+        .controls {
+            margin-top: 20px;
+            display: flex; /* Alinha os controles horizontalmente */
+            justify-content: center; /* Centraliza os controles */
+        }
+
+        .control-button {
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #e07a5f;
+            background-color: #fff;
+            color: #007bff;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s; /* Transição suave de cor */
+        }
+
+        .control-button:hover {
+            background-color: #e07a5f; /* Cor ao passar o mouse */
+            color: white; /* Texto branco ao passar o mouse */
+        }
+
+        .zoom-input {
+            width: 50px;
+            margin: 0 5px;
+            border: 1px solid #e07a5f; /* Borda para o input de zoom */
+            border-radius: 5px; /* Bordas arredondadas */
+            padding: 5px; /* Espaçamento interno */
+        }
+
+        h1 {
+            color: #e07a5f; /* Cor do título */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Sombra do título */
+            margin-bottom: 20px; /* Espaço abaixo do título */
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Informações</a></li>
+            <li><a href="cards.html">Cards</a></li>
+            <li><a href="gerador.html">Gerador de Cards</a></li>
+        </ul>
+    </nav>
+
+
+
+    <div class="card-generator">
+        <h1>Gerador de Cartas</h1>
+        <div class="card-preview" id="cardPreview">
+            <!-- A imagem da base da carta será adicionada dinamicamente -->
+        </div>
+        <input type="file" id="imageUpload" accept="image/*">
+        <button id="generateCard">Gerar Carta</button>
+        <button id="downloadCard">Baixar Carta</button> 
+        
+        <div class="controls">
+            <button class="control-button" id="moveUp">Mover para Cima</button>
+            <button class="control-button" id="moveDown">Mover para Baixo</button>
+            <label for="zoom" style="margin-right: 10px;">Zoom:</label>
+            <input type="number" class="zoom-input" id="zoom" value="100" min="50" max="200" step="10">%
+        </div>
+    </div>
+
+    <script>
+        let currentImage = null; 
+        let imageTop = 0; 
+        let imageZoom = 1; 
+
+        window.onload = function() {
+            const baseCard = document.createElement('img');
+            baseCard.src = 'MISC/GENERATOR/base_card.png';
+            baseCard.alt = 'Base da Carta';
+            baseCard.id = 'baseCard';
+            document.getElementById('cardPreview').appendChild(baseCard);
+        };
+
+        document.getElementById('generateCard').addEventListener('click', function() {
+            const imageUpload = document.getElementById('imageUpload').files[0];
+            
+            document.getElementById('cardPreview').innerHTML = '';
+
+            const baseCard = document.createElement('img');
+            baseCard.src = 'MISC/GENERATOR/base_card.png';
+            baseCard.alt = 'Base da Carta';
+            baseCard.id = 'baseCard';
+            document.getElementById('cardPreview').appendChild(baseCard);
+            
+            if (imageUpload) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'uploaded-image'; 
+                    document.getElementById('cardPreview').appendChild(img);
+                    currentImage = img; 
+                    updateImagePositionAndZoom(); 
+                };
+                reader.readAsDataURL(imageUpload);
+            }
+        });
+
+        function updateImagePositionAndZoom() {
+            if (currentImage) {
+                currentImage.style.top = imageTop + 'px';
+                currentImage.style.transform = `scale(${imageZoom})`;
+            }
+        }
+
+        document.getElementById('moveUp').addEventListener('click', function() {
+            if (currentImage) {
+                imageTop -= 10; 
+                updateImagePositionAndZoom();
+            }
+        });
+
+        document.getElementById('moveDown').addEventListener('click', function() {
+            if (currentImage) {
+                imageTop += 10; 
+                updateImagePositionAndZoom();
+            }
+        });
+
+        document.getElementById('zoom').addEventListener('input', function() {
+            imageZoom = this.value / 100; 
+            updateImagePositionAndZoom();
+        });
+
+        document.getElementById('downloadCard').addEventListener('click', function() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = 750; 
+            canvas.height = 1039; 
+
+            const baseCardImg = new Image();
+            baseCardImg.src = 'MISC/GENERATOR/base_card.png';
+            baseCardImg.onload = function() {
+                ctx.drawImage(baseCardImg, 0, 0, canvas.width, canvas.height);
+
+                if (currentImage) {
+                    const userImage = new Image();
+                    userImage.src = currentImage.src;
+                    userImage.onload = function() {
+                        const scaledWidth = userImage.width * imageZoom;
+                        const scaledHeight = userImage.height * imageZoom;
+                        ctx.drawImage(userImage, 0, imageTop, scaledWidth, scaledHeight);
+                        
+                        const link = document.createElement('a');
+                        link.download = 'carta.png';
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                    };
+                }
+            };
+        });
+    </script>
+</body>
+</html>
