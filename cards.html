@@ -225,6 +225,7 @@
             <option value="Gnoze">Gnoze</option>
             <option value="Longnus">Longnus</option>
             <option value="Sestra">Sestra</option>
+            <option value="dupla">Dupla Lealdade</option>
         </select>
 
         <select id="type-filter">
@@ -271,6 +272,9 @@
             <option value="6">Custo 6</option>
             <option value="7+">Custo 7+</option>
         </select>
+
+
+      
 
         
     </div>
@@ -1275,7 +1279,19 @@ function filterCards() {
     filteredCards = cards;
 
     if (searchValue) filteredCards = filteredCards.filter(card => card.nome.toLowerCase().includes(searchValue));
-    if (loyaltyValue) filteredCards = filteredCards.filter(card => card.lealdade && card.lealdade.includes(loyaltyValue));
+    
+
+    if (loyaltyValue) {
+        if (loyaltyValue === "dupla") {
+            filteredCards = filteredCards.filter(card => card.lealdade && card.lealdade.length > 1);
+        } else {
+            filteredCards = filteredCards.filter(card => card.lealdade && card.lealdade.includes(loyaltyValue));
+        }
+    }
+    
+    
+    
+
     if (typeValue) filteredCards = filteredCards.filter(card => card.tipo === typeValue);
     if (raceValue) filteredCards = filteredCards.filter(card => card.raça && card.raça.includes(raceValue));
 
