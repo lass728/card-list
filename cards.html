@@ -246,13 +246,16 @@
 <option value="Gigante">Gigante</option>
 <option value="Goblin">Goblin</option>
 <option value="Guerreiro">Guerreiro</option>
+<option value="Javali">Javali</option>
 <option value="Humano">Humano</option>
 <option value="Ladino">Ladino</option>
+<option value="Javali">Lodo</option>
 <option value="Mago">Mago</option>
 <option value="Martide">Martide</option>
 <option value="Morto-Vivo">Morto-Vivo</option>
 <option value="Pirata">Pirata</option>
 <option value="Planta">Planta</option>
+<option value="Rato">Rato</option>
 <option value="Yeti">Yeti</option>
         </select>
 
@@ -494,6 +497,16 @@
                 imagem: "MISC/CARDS/GnozeCre2.png"
             },
 
+            {
+                nome: "Martigão",
+                custo: 2,
+                lealdade: ["Gnoze","Longnus"],
+                raça: ["Martide", "Dragão"], 
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/zDuplaLealdade11.png"
+            },
+
+
 
             {
                 nome: "Maya, Chrononauta",
@@ -677,6 +690,16 @@
 
 
             {
+                nome: "Ira de Longnus",
+                custo: 1,
+                lealdade: ["Longnus"],
+                raça: ["Javali"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/LongCre17.png"
+            },
+
+
+            {
                 nome: "Lança do Dragão",
                 custo: 1,
                 lealdade: ["Longnus"],
@@ -797,13 +820,7 @@
 
 
             //AÇÕES DE LONGNUS
-            {
-                nome: "Bando",
-                custo: 1,
-                lealdade: ["Longnus"],
-                tipo: "Ação",
-                imagem: "MISC/CARDS/LongSp2.png"
-            },
+            
 
             {
                 nome: "Bola de Fogo",
@@ -835,6 +852,14 @@
                 lealdade: ["Longnus"],
                 tipo: "Ação",
                 imagem: "MISC/CARDS/LongSp7.png"
+            },
+
+            {
+                nome: "Bando",
+                custo: 2,
+                lealdade: ["Longnus"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/LongSp2.png"
             },
 
 
@@ -872,6 +897,15 @@
                 lealdade: ["Longnus"],
                 tipo: "Ação",
                 imagem: "MISC/CARDS/LongSp10.png"
+            },
+
+
+            {
+                nome: "Explosão",
+                custo: 4,
+                lealdade: ["Longnus"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/LongSp12.png"
             },
 
 
@@ -960,6 +994,16 @@
             },
 
 
+            {
+                nome: "Rato Gigante",
+                custo: 1,
+                lealdade: ["Sestra"],
+                raça: ["Rato"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/SestraCre13.png"
+            },
+
+
            
 
 
@@ -971,6 +1015,27 @@
                 tipo: "Criatura",
                 imagem: "MISC/CARDS/SestraCre5.png"
             },
+
+
+            {
+                nome: "Guia Rúnico",
+                custo: 2,
+                lealdade: ["Sestra"],
+                raça: ["Espírito", "Mago"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/SestraCre15.png"
+            },
+
+
+            {
+                nome: "Lodo Devorador",
+                custo: 2,
+                lealdade: ["Sestra"],
+                raça: ["Lodo"],
+                tipo: "Criatura",
+                imagem: "MISC/CARDS/SestraCre14.png"
+            },
+
 
 
             {
@@ -1037,7 +1102,7 @@
                 lealdade: ["Sestra"],
                 raça: ["Dragão","Elemental","Espectro","Espírito","Gato","Gigante",
                     "Goblin","Guerreiro","Humano","Ladino","Mago","Martide","Morto-Vivo","Pirata",
-                    "Planta","Yeti"
+                    "Planta","Yeti","Druida","Javali","Rato","Lodo"
                 ],
                 tipo: "Criatura",
                 imagem: "MISC/CARDS/SestraCre12.png"
@@ -1064,11 +1129,29 @@
             },
 
 
+            { nome: "Subjugar",
+                custo: 1,
+                lealdade: ["Sestra"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/SestraSp10.png"
+            },
+
+
+
+
             { nome: "Impacto Malicioso",
                 custo: 2,
                 lealdade: ["Sestra"],
                 tipo: "Ação",
                 imagem: "MISC/CARDS/SestraSp5.png"
+            },
+
+
+            { nome: "Rastro de Terror",
+                custo: 2,
+                lealdade: ["Sestra"],
+                tipo: "Ação",
+                imagem: "MISC/CARDS/SestraSp11.png"
             },
 
 
