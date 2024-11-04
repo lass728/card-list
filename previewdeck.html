@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo de Decks</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #4b2e1e;
+            color: #edf3e4;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 20px;
+            padding: 10px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        nav {
+            margin: 32px auto;
+            display: flex;
+            justify-content: center;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        nav ul li {
+            display: inline;
+        }
+        
+        nav ul li a {
+            color: #d4a373;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s, transform 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #e07a5f;
+            transform: scale(1.05);
+        }
+        
+        #decksContainer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .deck-container {
+            background-color: #e07a5f;
+            padding: 15px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 250px; /* Pode ajustar aqui se necessário */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .deck-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .deck-header {
+            position: relative;
+            width: 100%;
+            height: 150px;
+            overflow: hidden;
+            border-radius: 8px 8px 0 0;
+            background-color: #333;
+        }
+        
+        .deck-header img {
+            width: 100%;
+            height: auto; /* Ajuste automático da altura */
+            object-fit: cover;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .deck-title {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffffff;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .card-count {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffffff;
+            font-size: 0.8em;
+            text-align: center;
+        }
+        
+        .card-list {
+            margin-bottom: 15px;
+            max-height: 1500px;
+        }
+        
+        .card-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: #555;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .card-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .card-image {
+            width: 40px;
+            height: auto; /* Ajuste automático da altura */
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        
+        .card-cost {
+            background-color: #333;
+            padding: 2px 6px;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-right: 5px;
+        }
+        
+        .card-name {
+            color: #00ccff;
+            font-weight: bold;
+            flex-grow: 1;
+        }
+        
+        #previewContainer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 100%;
+            max-width: 250px;
+            height: auto; /* Ajusta a altura automaticamente */
+            display: none;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #fff;
+            background-color: #333;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        #previewImage {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+           
+        }
+        
+        .mana-curve {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 40px;
+            background-color: #444;
+            padding: 5px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .mana-bar {
+            width: 20px;
+            background-color: #00ccff;
+            border-radius: 5px;
+            max-height: 100%;
+        }
+        
+        /* Responsividade para dispositivos móveis */
+        @media (max-width: 768px) {
+            body {
+                gap: 10px;
+            }
+        
+            .deck-container {
+                padding: 10px;
+                max-width: 100%;
+            }
+        
+            .deck-header img {
+                height: auto; /* Ajusta altura automaticamente */
+            }
+        
+            .deck-title {
+                font-size: 1em;
+            }
+        
+            .card-image {
+                width: 30px;
+                height: auto; /* Ajuste automático da altura */
+            }
+        
+            .mana-curve {
+                height: 30px;
+                padding: 5px;
+            }
+        
+            .card-list {
+                max-height: 1500px;
+            }
+        
+            .mana-bar {
+                width: 15px;
+            }
+        
+            #previewContainer {
+                position: static; 
+                width: 100%;
+                height: auto; 
+                margin-top: 10px;
+                padding: 8px;
+            }
+        }
+        </style>
+        
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Informações</a></li>
+            <li><a href="cards.html">Cards</a></li>
+            <li><a href="previewdeck.html">Decks Iniciantes</a></li>
+        </ul>
+    </nav>
+
+
+    <a href="Manual - Cards of Idirion.pdf" download style="display: block; text-align: center; margin: 0 auto; width: 200px; padding: 10px; background-color: #e07a5f; color: white; text-decoration: none; border-radius: 5px; font-size: 16px;">Baixe o manual do jogo</a>
+
+
+<div id="decksContainer"></div>
+
+<div id="previewContainer">
+    <img id="previewImage" src="" alt="Prévia da Carta">
+</div>
+
+<div id="decksContainer"></div>
+<div id="previewContainer" style="display:none;">
+    <img id="previewImage" src="" alt="Preview"/>
+</div>
+
+<script>
+    const maxCardsPerDeck = 30;
+
+    const decks = [
+        {
+            nome: "Avatar de Longnus",
+            imagem: "deck1.jpg",
+            cartas: [
+                { nome: "Fragmento de Mana", custo: 0, imagem: "zfatem2", quantidade: 1 },
+                { nome: "Fada de Fogo", custo: 1, imagem: "LongCre9", quantidade: 2 },
+                { nome: "Frasco Vital", custo: 1, imagem: "zfatem1", quantidade: 1 },
+                { nome: "Frenesi de Combate", custo: 1, imagem: "LongSp1", quantidade: 2 },
+                { nome: "Ira de Longnus", custo: 1, imagem: "LongCre17", quantidade: 2 },
+                { nome: "Alquimista Goblin", custo: 2, imagem: "LongCre14", quantidade: 1 },
+                { nome: "Corsária Goblin", custo: 2, imagem: "LongCre11", quantidade: 2 },
+                { nome: "Enxame de Goblins", custo: 2, imagem: "LongSp11", quantidade: 2 },
+                { nome: "Martigão", custo: 2, imagem: "zDuplaLealdade11", quantidade: 2 },
+                { nome: "Captura Goblin", custo: 3, imagem: "LongCre7", quantidade: 2 },
+                { nome: "Desafiadora Veterana", custo: 3, imagem: "LongCre10", quantidade: 2 },
+                { nome: "Ímpeto de Combate", custo: 3, imagem: "LongSp3", quantidade: 2 },
+                { nome: "Capitão Remendo", custo: 4, imagem: "LongCre20", quantidade: 2 },
+                { nome: "Reforçar Arsenal", custo: 4, imagem: "LongSp4", quantidade: 2 },
+                { nome: "Dragão de Chifre", custo: 5, imagem: "LongCre5", quantidade: 2 },
+                { nome: "Avatar de Ignis", custo: 6, imagem: "LongCre19", quantidade: 1 },
+                { nome: "Gigante de Lava", custo: 7, imagem: "LongCre18", quantidade: 2 },
+            ]
+        },
+
+
+        {
+            nome: "Guia Fúnebre",
+            imagem: "deck2.jpg",
+            cartas: [
+                { nome: "Fragmento de Mana", custo: 0, imagem: "zfatem2", quantidade: 1 },
+                { nome: "Sombrassopro", custo: 0, imagem: "SestraCre16", quantidade: 2 },
+                { nome: "Frasco Vital", custo: 1, imagem: "zfatem1", quantidade: 2 },
+                { nome: "Aprendiz da Sombra", custo: 1, imagem: "SestraCre6", quantidade: 2 },
+                { nome: "Rato Gigante", custo: 1, imagem: "SestraCre13", quantidade: 2 },
+                { nome: "Espírito Sonolento", custo: 2, imagem: "SestraCre5", quantidade: 2 },
+                { nome: "Evocadora Tintespírito", custo: 2, imagem: "zDuplaLealdade3", quantidade: 2 },
+                { nome: "Guia Rúnico", custo: 2, imagem: "SestraCre15", quantidade: 2 },
+                { nome: "Lodo Devorador", custo: 2, imagem: "SestraCre14", quantidade: 2 },
+                { nome: "Abate Cruel", custo: 3, imagem: "SestraSp1", quantidade: 1 },
+                { nome: "Carniçal Bruto", custo: 3, imagem: "SestraCre11", quantidade: 2 },
+                { nome: "Colheita", custo: 3, imagem: "SestraSp8", quantidade: 2 },
+                { nome: "Morgrain", custo: 4, imagem: "SestraCre8", quantidade: 1 },
+                { nome: "Valleki, Mago Gélido", custo: 4, imagem: "zDuplaLealdade12", quantidade: 2 },
+                { nome: "Chamas Devoradoras", custo: 5, imagem: "SestraSp7", quantidade: 2 },
+                { nome: "Severus Caldwell", custo: 7, imagem: "SestraCre9", quantidade: 1 },
+                { nome: "Amálgama Maturin", custo: 8, imagem: "SestraCre12", quantidade: 2 },
+            ]
+        }
+    ];
+
+    function renderDecks(decks) {
+        const decksContainer = document.getElementById("decksContainer");
+        const previewContainer = document.getElementById("previewContainer");
+        const previewImage = document.getElementById("previewImage");
+
+        decks.forEach(deck => {
+            const deckContainer = document.createElement("div");
+            deckContainer.classList.add("deck-container");
+
+            const deckHeader = document.createElement("div");
+            deckHeader.classList.add("deck-header");
+            
+            const deckImage = document.createElement("img");
+            deckImage.src = deck.imagem;
+            deckHeader.appendChild(deckImage);
+
+            const deckTitle = document.createElement("div");
+            deckTitle.classList.add("deck-title");
+            deckTitle.textContent = deck.nome;
+            deckHeader.appendChild(deckTitle);
+
+            const cardCount = document.createElement("div");
+            cardCount.classList.add("card-count");
+            const currentCount = deck.cartas.reduce((sum, carta) => sum + carta.quantidade, 0);
+            cardCount.textContent = `(${currentCount}/30)`;
+            deckHeader.appendChild(cardCount);
+
+            deckContainer.appendChild(deckHeader);
+
+            const cardList = document.createElement("div");
+            cardList.classList.add("card-list");
+
+            // Caminho base para as imagens no sistema de arquivos local
+            const cardImagePath = "file:///C:/Users/FILHO/Documents/Idirion_All%20Cards/card-list-main/MISC/CARDS";
+
+            deck.cartas.forEach(carta => {
+                const cardItem = document.createElement("div");
+                cardItem.classList.add("card-item");
+
+                // Configurar a exibição da carta com imagem e nome
+                cardItem.innerHTML = `
+                    <span class="card-cost">${carta.custo}</span>
+                    <span class="card-name" style="cursor:pointer;">${carta.nome} x${carta.quantidade}</span>
+                `;
+
+                // Adiciona o evento de clique no nome da carta
+                cardItem.querySelector('.card-name').addEventListener("click", () => {
+                    const fullPath = `${cardImagePath}/${carta.imagem}.png`;
+                    window.open(fullPath, '_blank'); // Abre a imagem em uma nova aba
+                });
+
+                // Mostra a pré-visualização da imagem ao passar o mouse
+                cardItem.addEventListener("mouseover", () => {
+                    previewImage.src = `${cardImagePath}/${carta.imagem}.png`;
+                    previewContainer.style.display = "flex";
+                });
+
+                // Esconde a pré-visualização ao tirar o mouse
+                cardItem.addEventListener("mouseout", () => {
+                    previewContainer.style.display = "none";
+                });
+
+                cardList.appendChild(cardItem);
+            });
+
+            deckContainer.appendChild(cardList);
+
+            const manaCurve = document.createElement("div");
+            manaCurve.classList.add("mana-curve");
+
+            const manaCounts = Array(8).fill(0);
+            deck.cartas.forEach(carta => {
+                if (carta.custo <= 7) {
+                    manaCounts[carta.custo] += carta.quantidade;
+                } else {
+                    manaCounts[7] += carta.quantidade;
+                }
+            });
+
+            manaCounts.forEach(count => {
+                const manaBar = document.createElement("div");
+                manaBar.classList.add("mana-bar");
+                manaBar.style.height = `${count * 10}px`;
+                manaCurve.appendChild(manaBar);
+            });
+
+            deckContainer.appendChild(manaCurve);
+            decksContainer.appendChild(deckContainer);
+        });
+    }
+
+    renderDecks(decks);
+</script>
+
+
+
+
+</body>
+</html>
