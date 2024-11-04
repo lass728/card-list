@@ -355,38 +355,38 @@
             const cardList = document.createElement("div");
             cardList.classList.add("card-list");
 
-            // Caminho base para as imagens no sistema de arquivos local
-            const cardImagePath = "file:///C:/Users/FILHO/Documents/Idirion_All%20Cards/card-list-main/MISC/CARDS";
+            // Caminho base para as imagens no repositório GitHub Pages
+const cardImagePath = "./MISC/CARDS"; // Ajuste conforme necessário para o local correto das imagens
 
-            deck.cartas.forEach(carta => {
-                const cardItem = document.createElement("div");
-                cardItem.classList.add("card-item");
+deck.cartas.forEach(carta => {
+    const cardItem = document.createElement("div");
+    cardItem.classList.add("card-item");
 
-                // Configurar a exibição da carta com imagem e nome
-                cardItem.innerHTML = `
-                    <span class="card-cost">${carta.custo}</span>
-                    <span class="card-name" style="cursor:pointer;">${carta.nome} x${carta.quantidade}</span>
-                `;
+    // Configurar a exibição da carta com imagem e nome
+    cardItem.innerHTML = `
+        <span class="card-cost">${carta.custo}</span>
+        <span class="card-name" style="cursor:pointer;">${carta.nome} x${carta.quantidade}</span>
+    `;
 
-                // Adiciona o evento de clique no nome da carta
-                cardItem.querySelector('.card-name').addEventListener("click", () => {
-                    const fullPath = `${cardImagePath}/${carta.imagem}.png`;
-                    window.open(fullPath, '_blank'); // Abre a imagem em uma nova aba
-                });
+    // Adiciona o evento de clique no nome da carta
+    cardItem.querySelector('.card-name').addEventListener("click", () => {
+        const fullPath = `${cardImagePath}/${carta.imagem}.png`;
+        window.open(fullPath, '_blank'); // Abre a imagem em uma nova aba
+    });
 
-                // Mostra a pré-visualização da imagem ao passar o mouse
-                cardItem.addEventListener("mouseover", () => {
-                    previewImage.src = `${cardImagePath}/${carta.imagem}.png`;
-                    previewContainer.style.display = "flex";
-                });
+    // Mostra a pré-visualização da imagem ao passar o mouse
+    cardItem.addEventListener("mouseover", () => {
+        previewImage.src = `${cardImagePath}/${carta.imagem}.png`;
+        previewContainer.style.display = "flex";
+    });
 
-                // Esconde a pré-visualização ao tirar o mouse
-                cardItem.addEventListener("mouseout", () => {
-                    previewContainer.style.display = "none";
-                });
+    // Esconde a pré-visualização ao tirar o mouse
+    cardItem.addEventListener("mouseout", () => {
+        previewContainer.style.display = "none";
+    });
 
-                cardList.appendChild(cardItem);
-            });
+    cardList.appendChild(cardItem);
+});
 
             deckContainer.appendChild(cardList);
 
