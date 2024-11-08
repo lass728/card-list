@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exemplo de Decks</title>
+    <title>Decks Estruturais</title>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -274,83 +274,56 @@
     const maxCardsPerDeck = 30;
 
     const decks = [
-        {
-            nome: "Avatar de Longnus",
-            imagem: "deck1.jpg",
+
+    {
+            nome: "Ímpeto de Longnus",
+            imagem: "deck5.jpg",
             cartas: [
-                { nome: "Kinbad", custo: "", imagem: "Long3", quantidade: 1 },
-                { nome: "Fragmento de Mana", custo: 0, imagem: "zfatem2", quantidade: 1 },
-                { nome: "Fada de Fogo", custo: 1, imagem: "LongCre9", quantidade: 2 },
-                { nome: "Frasco Vital", custo: 1, imagem: "zfatem1", quantidade: 1 },
-                { nome: "Frenesi de Combate", custo: 1, imagem: "LongSp1", quantidade: 2 },
-                { nome: "Ira de Longnus", custo: 1, imagem: "LongCre17", quantidade: 2 },
-                { nome: "Alquimista Goblin", custo: 2, imagem: "LongCre14", quantidade: 1 },
+                { nome: "Wukong", custo: "", imagem: "Long2", quantidade: 1 },
+                { nome: "Bando de Goblins", custo: 1, imagem: "LongCre13", quantidade: 2 },
+                { nome: "Batedor Goblin", custo: 1, imagem: "LongCre6", quantidade: 2 },
+                { nome: "Bola de Fogo", custo: 1, imagem: "LongSp5", quantidade: 2 },
+                { nome: "Disparar Canhões", custo: 1, imagem: "LongSp6", quantidade: 2 },
+                { nome: "Imediato Martide", custo: 1, imagem: "zDuplaLealdade2", quantidade: 2 },
+                { nome: "Patife Goblin", custo: 1, imagem: "LongCre15", quantidade: 2 },
+                { nome: "Alquimista Goblin", custo: 2, imagem: "LongCre14", quantidade: 2 },
                 { nome: "Corsária Goblin", custo: 2, imagem: "LongCre11", quantidade: 2 },
-                { nome: "Enxame de Goblins", custo: 2, imagem: "LongSp11", quantidade: 2 },
-                { nome: "Martigão", custo: 2, imagem: "zDuplaLealdade11", quantidade: 2 },
-                { nome: "Captura Goblin", custo: 3, imagem: "LongCre7", quantidade: 2 },
-                { nome: "Desafiadora Veterana", custo: 3, imagem: "LongCre10", quantidade: 2 },
-                { nome: "Ímpeto de Combate", custo: 3, imagem: "LongSp3", quantidade: 2 },
+                { nome: "Golpe Baixo", custo: 2, imagem: "LongSp8", quantidade: 2 },
+                { nome: "Jaganata Goblin", custo: 2, imagem: "LongCre16", quantidade: 2 },
+                { nome: "Relâmpago", custo: 3, imagem: "LongSp10", quantidade: 2 },
                 { nome: "Capitão Remendo", custo: 4, imagem: "LongCre20", quantidade: 2 },
+                { nome: "Capitã Yodora", custo: 4, imagem: "zDuplaLealdade4", quantidade: 2 },
+                { nome: "Explosão", custo: 4, imagem: "LongSp12", quantidade: 2 },
                 { nome: "Reforçar Arsenal", custo: 4, imagem: "LongSp4", quantidade: 2 },
-                { nome: "Dragão de Chifre", custo: 5, imagem: "LongCre5", quantidade: 2 },
-                { nome: "Avatar de Ignis", custo: 6, imagem: "LongCre19", quantidade: 1 },
-                { nome: "Gigante de Lava", custo: 7, imagem: "LongCre18", quantidade: 2 },
+
             ]
         },
 
 
         {
-            nome: "Guia Fúnebre",
-            imagem: "deck2.jpg",
+            nome: "Terror Reencarnado",
+            imagem: "deck4.jpg",
             cartas: [
-                { nome: "Gideon", custo: "", imagem: "Sestra3", quantidade: 1 },
+                { nome: "Zéfira", custo: "", imagem: "Sestra1", quantidade: 1 },
+                { nome: "Cálice da Cobiça", custo: 0, imagem: "zfatem6", quantidade: 1 },
                 { nome: "Fragmento de Mana", custo: 0, imagem: "zfatem2", quantidade: 1 },
-                { nome: "Sombrassopro", custo: 0, imagem: "SestraCre16", quantidade: 2 },
-                { nome: "Frasco Vital", custo: 1, imagem: "zfatem1", quantidade: 2 },
-                { nome: "Aprendiz da Sombra", custo: 1, imagem: "SestraCre6", quantidade: 2 },
-                { nome: "Rato Gigante", custo: 1, imagem: "SestraCre13", quantidade: 2 },
-                { nome: "Espírito Sonolento", custo: 2, imagem: "SestraCre5", quantidade: 2 },
+                { nome: "Aprisionar", custo: 1, imagem: "SestraSp3", quantidade: 2 },
+                { nome: "Moeda dos Kzuh's", custo: 1, imagem: "zfatem3", quantidade: 2 },
+                { nome: "Servidão Constante", custo: 1, imagem: "SestraSp9", quantidade: 2 },
+                { nome: "Subjugar", custo: 1, imagem: "SestraSp10", quantidade: 2 },
                 { nome: "Evocadora Tintespírito", custo: 2, imagem: "zDuplaLealdade3", quantidade: 2 },
-                { nome: "Guia Rúnico", custo: 2, imagem: "SestraCre15", quantidade: 2 },
-                { nome: "Lodo Devorador", custo: 2, imagem: "SestraCre14", quantidade: 2 },
-                { nome: "Abate Cruel", custo: 3, imagem: "SestraSp1", quantidade: 1 },
-                { nome: "Carniçal Bruto", custo: 3, imagem: "SestraCre11", quantidade: 2 },
+                { nome: "Rastro de Terror", custo: 2, imagem: "SestraSp11", quantidade: 2 },
+                { nome: "Abate Cruel", custo: 3, imagem: "SestraSp1", quantidade: 2 },
                 { nome: "Colheita", custo: 3, imagem: "SestraSp8", quantidade: 2 },
-                { nome: "Morgrain", custo: 4, imagem: "SestraCre8", quantidade: 1 },
-                { nome: "Valleki, Mago Gélido", custo: 4, imagem: "zDuplaLealdade12", quantidade: 2 },
+                { nome: "Chamado da Sombra", custo: 4, imagem: "SestraSp6", quantidade: 2 },
+                { nome: "Morgrain", custo: 4, imagem: "SestraCre8", quantidade: 2 },
                 { nome: "Chamas Devoradoras", custo: 5, imagem: "SestraSp7", quantidade: 2 },
-                { nome: "Severus Caldwell", custo: 7, imagem: "SestraCre9", quantidade: 1 },
+                { nome: "Abominação Ancestral", custo: 7, imagem: "SestraCre4", quantidade: 2 },
+                { nome: "Severus Caldwell", custo: 7, imagem: "SestraCre9", quantidade: 2 },
                 { nome: "Amálgama Maturin", custo: 8, imagem: "SestraCre12", quantidade: 2 },
             ]
         },
 
-
-
-        {
-            nome: "Florescer Espiritual",
-            imagem: "deck3.jpg",
-            cartas: [
-                { nome: "Bakari", custo: "", imagem: "Kon1", quantidade: 1 },
-                { nome: "Fragmento de Mana", custo: 0, imagem: "zfatem2", quantidade: 1 },
-                { nome: "Frasco Vital", custo: 1, imagem: "zfatem1", quantidade: 2 },
-                { nome: "Juno, Protetora Verde", custo: 1, imagem: "KonCre3", quantidade: 2 },
-                { nome: "Gema de Apu", custo: 1, imagem: "zfatem7", quantidade: 1 },
-                { nome: "Porta-Alma", custo: 1, imagem: "KonCre14", quantidade: 2 },
-                { nome: "Elfo Prodigioso", custo: 2, imagem: "KonCre15", quantidade: 2 },
-                { nome: "Kobari", custo: 2, imagem: "KonCre5", quantidade: 2 },
-                { nome: "Lâmina da Alma", custo: 2, imagem: "KonCre13", quantidade: 2 },
-                { nome: "Molda Alma", custo: 2, imagem: "KonCre9", quantidade: 2 },
-                { nome: "Armada de Koncórdia", custo: 3, imagem: "KonSp6", quantidade: 2 },
-                { nome: "Combatente Felino", custo: 3, imagem: "KonCre6", quantidade: 2 },
-                { nome: "Sombra do Exílio", custo: 3, imagem: "KonSp5", quantidade: 2 },
-                { nome: "Sentinela do Bosque", custo: 4, imagem: "KonCre7", quantidade: 2 },
-                { nome: "Thalyel, a Esperança", custo: 4, imagem: "KonCre10", quantidade: 2 },
-                { nome: "Florescer", custo: 5, imagem: "KonSp2", quantidade: 1 },
-                { nome: "Serafim Rebelde", custo: 5, imagem: "KonCre8", quantidade: 2 },
-                { nome: "Ryunarith", custo: 7, imagem: "KonCre12", quantidade: 1 },
-            ]
-        }
     ];
 
     function renderDecks(decks) {

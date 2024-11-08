@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Decks de Cartas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #deck-output {
+            margin-top: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #fff;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Gerador de Decks de Cartas</h1>
+    <label for="deck-size">Tamanho do Deck:</label>
+    <input type="number" id="deck-size" value="5" min="1" max="20"><br><br>
+    <label for="card-copies">Número de Cópias por Carta:</label>
+    <input type="number" id="card-copies" value="1" min="1" max="3"><br><br>
+    <button id="generate-deck">Gerar Deck</button>
+    <div id="deck-output"></div>
+
+    <script>
+        class Card {
+            constructor(name, cost, tags, power, type) {
+                this.name = name;
+                this.cost = cost;
+                this.tags = tags;
+                this.power = power;
+                this.type = type;
+            }
+        }
+
+        const cards = [
+            new Card('Goblin Exemplo', 1, ['Goblin', 'Pirates', 'Swarm'], 1, 'criatura'),
+            new Card('Elfo Exemplo', 1, ['Elfo', 'Cura', 'Ramp'], 1, 'criatura'),
+            new Card('Elfo Careca', 1, ['Elfo', 'Cura', 'Ramp'], 1, 'criatura'),
+            new Card('Magia de Ramp Exemplo', 3, ['Ramp'], 2, 'magia'),
+            new Card('Goblin de Ataque', 1, ['Goblin', 'Swarm'], 1, 'criatura'),
+            new Card('Elfo de Ataque', 1, ['Elfo', 'Cura', 'Ramp'], 1, 'criatura'),
+            new Card('Elfo de Ataque 2', 2, ['Elfo', 'Cura', 'Ramp'], 2, 'criatura'),
+            new Card('Curador Elfo', 2, ['Elfo', 'Cura'], 2, 'criatura'),
+            new Card('Curador Elfo 2', 3, ['Elfo', 'Cura'], 3, 'criatura'),
+            new Card('Magia de Curar', 2, ['Cura'], 1, 'magia'),
+            new Card('Magia de Curar 2', 4, ['Cura'], 2, 'magia'),
+            new Card('Magia de Curar 3', 6, ['Cura'], 3, 'magia'),
+            new Card('Rampagem', 4, ['Ramp', 'Swarm'], 3, 'magia'),
+            new Card('Rampagem 2', 6, ['Ramp', 'Swarm'], 5, 'magia')
+        ];
+
+        const minPower = 10; // Poder mínimo do deck
+        const maxPower = 30; // Poder máximo do deck
+
+        function generateDeck(cardPool, deckSize, cardCopies) {
+            let deck;
+            let totalPower;
+
+            do {
+                deck = [];
+                totalPower = 0;
+
+                // Gera cartas com base no número de cópias permitido
+                while (deck.length < deckSize) {
+                    const nextCard = getNextCard(deck, cardPool, cardCopies);
+                    if (nextCard) {
+                        deck.push(nextCard);
+                        totalPower += nextCard.power;
+                    } else {
+                        break; // Para caso não haja mais cartas disponíveis
+                    }
+                }
+            } while (totalPower < minPower || totalPower > maxPower); // Tenta gerar um novo deck se o totalPower estiver fora do intervalo
+
+            return {
+                deck,
+                totalPower
+            };
+        }
+
+        function getNextCard(deck, cardPool, cardCopies) {
+            // Coleta as tags do deck atual
+            const tagsInDeck = deck.flatMap(c => c.tags);
+            const availableCards = cardPool.filter(card => {
+                // Limitar a escolha às cartas que têm sinergia com as tags no deck
+                const hasSynergy = card.tags.some(tag => tagsInDeck.includes(tag));
+                // Verifica se a carta já não está no deck ou se já atingiu o número de cópias
+                const isInDeck = deck.filter(c => c.name === card.name).length >= cardCopies;
+                return hasSynergy && !isInDeck; // Retorna apenas cartas com sinergia e que não estão no deck ou que já não atingiram o limite
+            });
+
+            // Ordena as cartas disponíveis por custo e poder (priorizando menor custo primeiro)
+            availableCards.sort((a, b) => a.cost - b.cost || b.power - a.power);
+            
+            // Retorna a melhor opção, se houver
+            return availableCards.length > 0 ? availableCards[0] : null;
+        }
+
+        document.getElementById('generate-deck').addEventListener('click', () => {
+            const deckSize = parseInt(document.getElementById('deck-size').value);
+            const cardCopies = parseInt(document.getElementById('card-copies').value);
+            const generatedDeck = generateDeck(cards, deckSize, cardCopies);
+            const output = `
+                <h2>Deck Gerado</h2>
+                <ul>
+                    ${generatedDeck.deck.map(card => `<li>${card.name} (Custo: ${card.cost}, Poder: ${card.power})</li>`).join('')}
+                </ul>
+                <p>Valor de Poder Total: ${generatedDeck.totalPower}</p>
+            `;
+            document.getElementById('deck-output').innerHTML = output;
+        });
+    </script>
+</body>
+</html>
