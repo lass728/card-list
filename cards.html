@@ -79,6 +79,8 @@
             font-size: 14px;
         }
 
+        
+
 
 
         #pagination {
@@ -157,6 +159,14 @@
     color: #ffffff;
     cursor: not-allowed;
     transform: none;
+}
+
+
+#pagination button.active-page {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    border: none;
 }
     
         /* Media query para telas pequenas */
@@ -1525,7 +1535,7 @@
 
         
         let currentPage = 1;
-const cardsPerPage = 16;
+const cardsPerPage = 24;
 let filteredCards = [];
 
 function filterCards() {
